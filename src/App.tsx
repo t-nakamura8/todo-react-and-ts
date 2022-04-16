@@ -16,6 +16,20 @@ function App() {
     setText(e.target.value);
   };
 
+  const handleOnEdit = (id: number, value: string) => {
+
+    const deepCopy = todos.map((todo) => ({...todo}))
+
+    // イミュータブルにする為にディープコピーされた配列に Array.map() を適用
+    const newTodos = deepCopy.map((todo) => {
+      if(todo.id === id) {
+        todo.value = value 
+      }
+      return todo
+    })
+    setTodos(newTodos)
+  }
+
   const handleOnSubmit = () => {
     // 何も入力されていなかったらリターン
     if(!text) return
@@ -54,7 +68,14 @@ function App() {
 
       <ul>
         {todos.map((todo) => {
-          return <li key={todo.id}>{todo.value}</li>
+          return ( 
+            <li key={todo.id}>
+              <input type="text"
+                value={todo.value}
+                onChange={(e) => handleOnEdit(todo.id, e.target.value)}
+              />
+            </li>
+          )
         })}
       </ul>
     </div>
